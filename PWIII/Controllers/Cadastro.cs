@@ -4,34 +4,38 @@ namespace PWIII.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class Cadastro : ControllerBase
+    public class CadastroController : ControllerBase
     {
-        public List<PWIII.Cadastro> cadastros { get; set; }
+        private List<Cadastro> cadastros { get; set; }
 
-        private readonly ILogger<Cadastro> _logger;
+        private readonly ILogger<CadastroController> _logger;
 
-
-        public Cadastro(ILogger<Cadastro> logger)
+        private static List<Cadastro> listaCadastro = new List<Cadastro>()
+        {
+            new Cadastro("admin","12345678901", Convert.ToDateTime("1989/06/13"), 33),
+            new Cadastro("admin2","23456789012", Convert.ToDateTime("1989/06/14"), 33)
+        };
+        public CadastroController(ILogger<CadastroController> logger)
         {
             _logger = logger;
-            cadastros = cadastros.Select(client => new PWIII.Cadastro
+            cadastros = listaCadastro.Select(x => new Cadastro
             {
-                DataNascimento = client.DataNascimento,
-                Nome = client.Nome,
-                Cpf = client.Cpf,
-                Idade = client.Idade,
+                Cpf = x.Cpf,
+                Nome = x.Nome,
+                DataNascimento = x.DataNascimento,
+                Idade = x.Idade,
             }).ToList();
         }
 
         [HttpGet]
         //https://localhost:7197/Cadastro GET
-        public IEnumerable<PWIII.Cadastro> Consulta()
+        public IActionResult Consulta()
         {
-            return cadastros.ToList();
+            return Ok(cadastros);
         }
         [HttpPost]
         //https://localhost:7197/Cadastro POST
-        public PWIII.Cadastro Insert(PWIII.Cadastro cadastro)
+        public Cadastro Insert(Cadastro cadastro)
         {
             cadastros.Add(cadastro);
             return cadastro;
@@ -39,7 +43,7 @@ namespace PWIII.Controllers
 
         [HttpDelete]
         //https://localhost:7197/Cadastro DELETE
-        public PWIII.Cadastro Delete(PWIII.Cadastro cadastro)
+        public Cadastro Delete(Cadastro cadastro)
         {
             cadastros.Remove(cadastro);
             return cadastro;
@@ -47,9 +51,9 @@ namespace PWIII.Controllers
 
         [HttpPut]
         //https://localhost:7197/Cadastro PUT
-        public PWIII.Cadastro Update(PWIII.Cadastro cadastro)
+        public Cadastro Update(Cadastro cadastro)
         {
-            PWIII.Cadastro item = cadastros.FirstOrDefault(x => x.Cpf == cadastro.Cpf);
+            Cadastro item = cadastros.FirstOrDefault(x => x.Cpf == cadastro.Cpf);
             if (item != null)
                 item = cadastro;
 
