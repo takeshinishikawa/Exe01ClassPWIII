@@ -14,7 +14,13 @@ namespace PWIII.Controllers
         public Cadastro(ILogger<Cadastro> logger)
         {
             _logger = logger;
-            cadastros = new List<PWIII.Cadastro>();
+            cadastros = cadastros.Select(client => new PWIII.Cadastro
+            {
+                DataNascimento = client.DataNascimento,
+                Nome = client.Nome,
+                Cpf = client.Cpf,
+                Idade = client.Idade,
+            }).ToList();
         }
 
         [HttpGet]
