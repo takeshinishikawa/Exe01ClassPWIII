@@ -6,13 +6,6 @@ namespace PWIII.Controllers
     [Route("[controller]")]
     public class Cadastro : ControllerBase
     {
-        /*private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };*/
-
-        //private readonly ILogger<Cadastro> _logger;
-
         public List<PWIII.Cadastro> cadastros { get; set; }
 
         private readonly ILogger<Cadastro> _logger;
