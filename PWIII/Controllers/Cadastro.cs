@@ -59,7 +59,8 @@ namespace PWIII.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
+            else if (dataNascimento.Year == 1 && dataNascimento.Month == 1 && dataNascimento.Day == 1)
+                return BadRequest("É necessário informar uma data de nascimento.");
             Cadastro novoCadastro = new Cadastro(cpf, name, dataNascimento);
             if (novoCadastro != null)
             {
