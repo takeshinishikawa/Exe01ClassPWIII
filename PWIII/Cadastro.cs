@@ -5,6 +5,8 @@ namespace PWIII
 {
     public class Cadastro
     {
+        public long Id { get; set; }
+
         [MinLength(11, ErrorMessage = "Não existe CPF com menos de 11 números")]
         [MaxLength(11, ErrorMessage = "Não existe CPF com mais de 11 números")]
         public string Cpf { get; set; }
@@ -18,27 +20,11 @@ namespace PWIII
         public DateTime DataNascimento { get; set; }
         public int Idade { get; set; }
 
-        public Cadastro(string cpf, string nome, DateTime dataNascimento)
-        {
-            Cpf = cpf;
-            Nome = nome;
-            DataNascimento = dataNascimento;
-            Idade = CalcularIdade(dataNascimento);
-        }
-        public Cadastro()
-        {
-
-        }
-
         public int CalcularIdade(DateTime dataNascimento)
         {
-            // Save hoje's date.
             var hoje = DateTime.Today;
-
-            // Calculate the idade.
             var idadeCalculada = hoje.Year - dataNascimento.Year;
 
-            // Go back to the year in which the person was born in case of a leap year
             if (dataNascimento.Date > hoje.AddYears(-idadeCalculada))
                 idadeCalculada--;
             return idadeCalculada;
