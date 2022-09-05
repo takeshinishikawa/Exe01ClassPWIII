@@ -1,3 +1,7 @@
+using PWIII.Core.Inteface;
+using PWIII.Core.Service;
+using PWIII.Infra.Data.Repository;
+
 namespace PWIII
 {
     public class Program
@@ -12,6 +16,9 @@ namespace PWIII
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<ICadastroService, CadastroService>();
+            builder.Services.AddScoped<ICadastroRepository, CadastroRepository>();
 
             var app = builder.Build();
 

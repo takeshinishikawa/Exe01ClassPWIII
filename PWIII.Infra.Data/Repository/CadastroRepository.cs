@@ -1,16 +1,18 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using PWIII.Core;
+using PWIII.Core.Inteface;
 
-namespace PWIII.Repository
+namespace PWIII.Infra.Data.Repository
 {
-    public class CadastroRepository
+    public class CadastroRepository : ICadastroRepository
     {
         private readonly IConfiguration _configuration;
         public CadastroRepository(IConfiguration configuration)
         {
             _configuration = configuration;
         }
-
         public List<Cadastro> GetCadastros()
         {
             var query = "SELECT * FROM clientes";
@@ -19,7 +21,6 @@ namespace PWIII.Repository
 
             return conn.Query<Cadastro>(query).ToList();
         }
-
         public Cadastro GetByCpf(string cpf)
         {
             var query = "SELECT * FROM clientes WHERE cpf LIKE @cpf";
@@ -33,7 +34,6 @@ namespace PWIII.Repository
 
             return conn.QueryFirstOrDefault<Cadastro>(query, parameters);
         }
-
         public bool Insert(Cadastro novoCliente)
         {
             var query = "INSERT INTO clientes VALUES (@cpf, @nome, @dataNascimento, @idade)";
@@ -48,7 +48,6 @@ namespace PWIII.Repository
 
             return conn.Execute(query, parameters) == 1;
         }
-
         public bool Delete(string cpf)
         {
             var query = "DELETE FROM clientes WHERE cpf = @cpf";
@@ -60,7 +59,6 @@ namespace PWIII.Repository
 
             return conn.Execute(query, parameters) == 1;
         }
-
         public bool Update(long id, Cadastro cadastro)
         {
             var query = "UPDATE clientes SET cpf = @cpf, nome = @nome, dataNascimento = @dataNascimento, idade = @idade WHERE id = @id";
@@ -72,6 +70,5 @@ namespace PWIII.Repository
 
             return conn.Execute(query, parameters) == 1;
         }
-
     }
 }

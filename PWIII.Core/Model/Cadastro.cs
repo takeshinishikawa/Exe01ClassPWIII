@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;//possibilita a criação de validações dos atributos, além do retorno de mensidadens de erro
 
-namespace PWIII
+namespace PWIII.Core
 {
     public class Cadastro
     {
@@ -16,7 +15,7 @@ namespace PWIII
         public string Nome { get; set; }
 
         [Required(ErrorMessage = "Data é obrigatória.")]
-        [Remote("IsValidDateOfBirth", "Validation", HttpMethod = "POST", ErrorMessage = "Por favor, informe uma data de nascimento válida.")]
+        //[Remote("IsValidDateOfBirth", "Validation", HttpMethod = "POST", ErrorMessage = "Por favor, informe uma data de nascimento válida.")]
         public DateTime DataNascimento { get; set; }
         public int Idade { get; set; }
 

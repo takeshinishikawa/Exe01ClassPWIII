@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using PWIII.Repository;
+using PWIII.Core;
+using PWIII.Core.Inteface;
 
 namespace PWIII.Controllers
 {
@@ -9,11 +10,11 @@ namespace PWIII.Controllers
     [Produces("application/json")]
     public class CadastroController : ControllerBase
     {
-        public CadastroRepository _repositoryCadastro;
+        public ICadastroService _cadastroService;
 
-        public CadastroController(IConfiguration configuration)
+        public CadastroController(ICadastroService cadastroService)
         {
-            _repositoryCadastro = new CadastroRepository(configuration);
+            _cadastroService = cadastroService;
         }
 
         [HttpGet("/consultar")]
@@ -21,7 +22,7 @@ namespace PWIII.Controllers
         //https://localhost:7197/Cadastro GET
         public ActionResult<List<Cadastro>> GetCadastros()
         {
-            return Ok(_repositoryCadastro.GetCadastros());
+            return Ok(_cadastroService.GetCadastros());
         }
 
         [HttpGet("/{cpf}/consultar")]
@@ -30,7 +31,7 @@ namespace PWIII.Controllers
         //https://localhost:7197/Cadastro GET
         public ActionResult<Cadastro> GetByCpf(string cpf)
         {
-            Cadastro cadastro = _repositoryCadastro.GetByCpf(cpf);
+            Cadastro cadastro = _cadastroService.GetByCpf(cpf);
 
             if (cadastro != null)
                 return Ok(cadastro);
@@ -49,7 +50,7 @@ namespace PWIII.Controllers
             else if (novoCadastro.DataNascimento.Year == 1 && novoCadastro.DataNascimento.Month == 1 && novoCadastro.DataNascimento.Day == 1)
                 return BadRequest("É necessário informar uma data de nascimento.");
             novoCadastro.Idade = novoCadastro.CalcularIdade(novoCadastro.DataNascimento);
-            if (_repositoryCadastro.Insert(novoCadastro))
+            if (_cadastroService.Insert(novoCadastro))
                 return CreatedAtAction(nameof(Insert), novoCadastro);
             else
                 return BadRequest();
@@ -61,8 +62,8 @@ namespace PWIII.Controllers
         //https://localhost:7197/Cadastro DELETE
         public ActionResult<Cadastro> Delete(string cpf)
         {
-            Cadastro cadastro = _repositoryCadastro.GetByCpf(cpf);
-            if (_repositoryCadastro.Delete(cpf))
+            Cadastro cadastro = _cadastroService.GetByCpf(cpf);
+            if (_cadastroService.Delete(cpf))
                 return Ok(cadastro);
             return NotFound();
         }
@@ -77,7 +78,7 @@ namespace PWIII.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
             cadastro.Idade = cadastro.CalcularIdade(cadastro.DataNascimento);
-            if (_repositoryCadastro.Update(id, cadastro))
+            if (_cadastroService.Update(id, cadastro))
                 return Ok(cadastro);
             return NotFound();
         }
