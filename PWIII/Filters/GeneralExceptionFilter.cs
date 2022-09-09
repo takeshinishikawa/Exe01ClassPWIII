@@ -20,12 +20,14 @@ namespace PWIII.Filters
             {
                 case ArgumentNullException:
                     context.HttpContext.Response.StatusCode = StatusCodes.Status417ExpectationFailed;
+                    problem.Status = 417;
                     problem.Detail = "Erro inesperado no sistema";
                     problem.Title = "Erro inesperado no sistema";
                     context.Result = new ObjectResult(problem);
                     break;
                 case SqlException:
                     context.HttpContext.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
+                    problem.Status = 503;
                     problem.Detail = "Erro inesperado ao se comunicar com o banco de dados";
                     problem.Title = "Erro inesperado ao se comunicar com o banco de dados";
                     context.Result = new ObjectResult(problem);
@@ -36,7 +38,5 @@ namespace PWIII.Filters
                     break;
             }
         }
-
-
     }
 }
