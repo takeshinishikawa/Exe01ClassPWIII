@@ -18,6 +18,10 @@ namespace PWIII.Core.Service
         {
             return _cadastroRepository.GetByCpf(cpf);
         }
+        public Cadastro GetById(long id)
+        {
+            return _cadastroRepository.GetById(id);
+        }
         public List<Cadastro> GetCadastros()
         {
             return _cadastroRepository.GetCadastros();

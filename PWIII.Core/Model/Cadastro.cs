@@ -4,6 +4,7 @@ namespace PWIII.Core
 {
     public class Cadastro
     {
+        [Key]
         public long Id { get; set; }
 
         [MinLength(11, ErrorMessage = "Não existe CPF com menos de 11 números")]

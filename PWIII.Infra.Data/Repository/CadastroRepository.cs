@@ -34,6 +34,19 @@ namespace PWIII.Infra.Data.Repository
 
             return conn.QueryFirstOrDefault<Cadastro>(query, parameters);
         }
+        public Cadastro GetById(long id)
+        {
+            var query = "SELECT * FROM clientes WHERE id LIKE @id";
+
+            var parameters = new DynamicParameters(new
+            {
+                id
+            });
+
+            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+
+            return conn.QueryFirstOrDefault<Cadastro>(query, parameters);
+        }
         public bool Insert(Cadastro novoCliente)
         {
             var query = "INSERT INTO clientes VALUES (@cpf, @nome, @dataNascimento, @idade)";

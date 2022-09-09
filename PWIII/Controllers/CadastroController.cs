@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PWIII.Core;
 using PWIII.Core.Inteface;
+using PWIII.Filters;
 
 namespace PWIII.Controllers
 {
@@ -42,6 +43,7 @@ namespace PWIII.Controllers
         [HttpPost("/cadastrar")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [TypeFilter(typeof(ValidateCpfExistsActionFilter))]
         //https://localhost:7197/Cadastro POST
         public ActionResult<Cadastro> Insert(Cadastro novoCadastro)
         {
@@ -59,6 +61,8 @@ namespace PWIII.Controllers
         [HttpDelete("{cpf}/deletar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [TypeFilter(typeof(ValidateCpfExistsDeleteActionFilter))]
+        
         //https://localhost:7197/Cadastro DELETE
         public ActionResult<Cadastro> Delete(string cpf)
         {
@@ -68,10 +72,11 @@ namespace PWIII.Controllers
             return NotFound();
         }
 
-        [HttpPut("/atualizar")]
+        [HttpPut("/atualizar/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [TypeFilter(typeof(IsRegisteredActionFilter))]
         //https://localhost:7197/Cadastro PUT
         public ActionResult<Cadastro> Update(long id, Cadastro cadastro)
         {
@@ -80,7 +85,7 @@ namespace PWIII.Controllers
             cadastro.Idade = cadastro.CalcularIdade(cadastro.DataNascimento);
             if (_cadastroService.Update(id, cadastro))
                 return Ok(cadastro);
-            return NotFound();
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
     }
 }
